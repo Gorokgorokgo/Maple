@@ -45,4 +45,11 @@ export class UsersService {
 
         return newUser.save();
     }
+
+
+    async findByLoginId(loginId: string) {
+    return this.userModel.findOne({ loginId });
+    }
+
+
 }
