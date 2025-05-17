@@ -1,13 +1,31 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { Roles } from 'src/auth/roles.decorator';
+import { UpdateUserRoleDto } from './dto/update-user-role.dto';
+import { UsersService } from './users.service';
+
 
 @ApiTags('users')
 @ApiBearerAuth('access-token')
 @Controller('users')
 export class UsersController {
+    constructor(private readonly usersService: UsersService) {}
+
+    // 역할 변경
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('ADMIN')
+    @Patch(':id/role')
+    updateUserRole(
+        @Param('id') id: string,
+        @Body() dto: UpdateUserRoleDto,
+    ) {
+        return this.usersService.updateRole(id, dto.role);
+    }
+
+    //---------- 테스트 메서드 -------------
+
     @UseGuards(JwtAuthGuard)
     @Get('me')
     getProfile(@Req() req) {
