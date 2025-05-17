@@ -6,7 +6,7 @@ export class LoginDto {
   @IsString()
   loginId: string;
 
-  @ApiProperty({ example: 'Qwe123!@#', description: '비밀번호' })
+  @ApiProperty({ example: 'qweQWE123!@#', description: '비밀번호' })
   @IsString()
   password: string;
 }
