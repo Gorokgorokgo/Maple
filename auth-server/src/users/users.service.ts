@@ -4,6 +4,7 @@ import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Role } from 'src/common/enums/role.enum';
 
 @Injectable()
 
@@ -13,7 +14,7 @@ export class UsersService {
     ) { }
 
     // 역할 변경
-    async updateRoleByLoginId(loginId: string, newRole: string) {
+    async updateRoleByLoginId(loginId: string, newRole: Role) {
         const user = await this.userModel.findOne({ loginId });
         if (!user) {
             throw new NotFoundException('해당 유저를 찾을 수 없습니다.');
@@ -55,12 +56,12 @@ export class UsersService {
             userCode,
         });
 
-        return newUser.save();
+        return await newUser.save();
     }
 
     // 로그인 아이디로 유저 검색
     async findByLoginId(loginId: string) {
-        return this.userModel.findOne({ loginId });
+        return await this.userModel.findOne({ loginId });
     }
 
 }

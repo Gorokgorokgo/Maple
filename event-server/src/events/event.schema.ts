@@ -1,14 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { EventStatus } from 'src/common/enums/event-status.enum';
+
 
 export type EventDocument = Event & Document;
-
-export enum EventStatus {
-    ACTIVE = 'ACTIVE',
-    INACTIVE = 'INACTIVE',
-    ENDED = 'ENDED',
-}
 
 @Schema({ timestamps: true })
 export class Event {
