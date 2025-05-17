@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './user.schema';
 import { Model } from 'mongoose';
@@ -11,6 +11,18 @@ export class UsersService {
     constructor(
         @InjectModel(User.name) private userModel: Model<UserDocument>,
     ) { }
+
+    // 역할 변경
+    async updateRole(userId: string, newRole: string) {
+        const user = await this.userModel.findById(userId);
+        if (!user) {
+            throw new NotFoundException('해당 유저를 찾을 수 없습니다.');
+        }
+
+        user.role = newRole;
+        await user.save();
+        return user;
+    }
 
     // 유저 생성
     async create(createUserDto: CreateUserDto): Promise<User> {
@@ -46,10 +58,9 @@ export class UsersService {
         return newUser.save();
     }
 
-
+    // 로그인 아이디로 유저 검색
     async findByLoginId(loginId: string) {
-    return this.userModel.findOne({ loginId });
+        return this.userModel.findOne({ loginId });
     }
-
 
 }
