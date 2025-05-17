@@ -13,8 +13,8 @@ export class UsersService {
     ) { }
 
     // 역할 변경
-    async updateRole(userId: string, newRole: string) {
-        const user = await this.userModel.findById(userId);
+    async updateRoleByLoginId(loginId: string, newRole: string) {
+        const user = await this.userModel.findOne({ loginId });
         if (!user) {
             throw new NotFoundException('해당 유저를 찾을 수 없습니다.');
         }
