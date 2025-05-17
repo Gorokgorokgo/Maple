@@ -16,12 +16,12 @@ export class UsersController {
     // 역할 변경
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles('ADMIN')
-    @Patch(':id/role')
+    @Patch(':loginId/role')
     updateUserRole(
-        @Param('id') id: string,
+        @Param('loginId') loginId: string,
         @Body() dto: UpdateUserRoleDto,
     ) {
-        return this.usersService.updateRole(id, dto.role);
+        return this.usersService.updateRoleByLoginId(loginId, dto.role);
     }
 
     //---------- 테스트 메서드 -------------
