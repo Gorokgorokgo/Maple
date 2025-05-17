@@ -40,7 +40,7 @@ async function bootstrap() {
       },
     },
   });
-
+  SwaggerModule.setup('/swagger-json', app, document);
 
   const port = parseInt(process.env.PORT || '3001', 10);
   await app.listen(port);
