@@ -1,0 +1,40 @@
+import {
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
+
+@Injectable()
+export class RolesGuard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean {
+    const req = context.switchToHttp().getRequest();
+    const { method, originalUrl } = req;
+    const user = req.user;
+
+    if (!user || !user.role) {
+      throw new ForbiddenException('권한 정보가 없습니다.');
+    }
+
+    const role = user.role;
+
+    // =========== 경로별 권한 검사 ===========
+
+    // 역할 변경: PATCH /users/:id/role
+    if (method === 'PATCH' && /^\/users\/[^/]+\/role$/.test(originalUrl)) {
+      if (!['ADMIN'].includes(role)) {
+        throw new ForbiddenException('역할 변경은 관리자만 가능합니다.');
+      }
+    }
+
+    // 유저 조회: GET /users/:loginId
+    if (method === 'GET' && /^\/users\/[^/]+$/.test(originalUrl)) {
+      if (!['ADMIN', 'OPERATOR'].includes(role)) {
+        throw new ForbiddenException('유저 조회는 관리자 또는 운영자만 가능합니다.');
+      }
+    }
+
+    // 권한 통과
+    return true; 
+  }
+}

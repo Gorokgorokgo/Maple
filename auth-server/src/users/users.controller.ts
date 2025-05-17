@@ -1,8 +1,5 @@
-import { Body, Controller, Get, NotFoundException, Param, Patch, Req, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Body, Controller, Get, NotFoundException, Param, Patch } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { RolesGuard } from 'src/roles/roles.guard';
-import { Roles } from 'src/auth/roles.decorator';
 import { UpdateUserRoleDto } from './dto/update-user-role.dto';
 import { UsersService } from './users.service';
 
@@ -15,9 +12,7 @@ export class UsersController {
 
 
     // 로그인 아이디 기반 유저 조회
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('ADMIN', 'OPERATOR')
-    @Get(':loginId') 
+    @Get(':loginId')
     @ApiOperation({ summary: '유저 조회' })
     @ApiParam({ name: 'loginId', description: '유저의 로그인 ID' })
     @ApiResponse({ status: 200, description: '유저 정보 반환' })
@@ -32,8 +27,6 @@ export class UsersController {
     }
 
     // 역할 변경
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles('ADMIN')
     @Patch(':loginId/role')
     @ApiOperation({ summary: '역할 변경' })
     updateUserRole(
