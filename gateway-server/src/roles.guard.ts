@@ -20,7 +20,6 @@ export class RolesGuard implements CanActivate {
 
     // =========== 경로별 권한 검사 ===========
 
-
     // 보상 요청 : POST /events/:eventCode/rewards/request
     if (method === 'POST' && /^\/events\/[^/]+\/rewards\/request$/.test(originalUrl)) {
       if (!['ADMIN', 'USER'].includes(role)) {

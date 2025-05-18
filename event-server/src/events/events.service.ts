@@ -7,9 +7,11 @@ import { RewardRequestStatus } from 'src/common/enums/reward-request-status.enum
 import { RewardRequest, RewardRequestDocument } from 'src/rewards/reward-request.schema';
 import { RewardDefinition, RewardDefinitionDocument } from 'src/rewards/reward_definitions';
 import { CreateEventRequestDto } from './dto/create-event-request.dto';
-import { CreateEventResponseDto } from './dto/create-event-response-dto';
+import { CreateEventResponseDto } from './dto/create-event-response.dto';
 import { CreateRewardRequestResponseDto } from './dto/create-reward-request-response.dto';
 import { EventDocument } from './event.schema';
+import { GetMyRewardsResponseDto } from './dto/get-my-rewards-response.dto';
+import { RewardSummaryDto } from './dto/reward-summary.dto';
 
 @Injectable()
 export class EventsService {
@@ -22,7 +24,6 @@ export class EventsService {
         private readonly defModel: Model<RewardDefinitionDocument>,
         @InjectModel(RewardRequest.name)
         private readonly reqModel: Model<RewardRequestDocument>,
-
     ) { }
 
     // Code +1씩 카운트
@@ -33,6 +34,36 @@ export class EventsService {
             { new: true, upsert: true },
         );
         return result.seq;
+    }
+
+    // 본인 보상 요청 이력 조회
+    async getMyRewards(
+        userCode: string,
+    ): Promise<GetMyRewardsResponseDto> {
+        // 1) userCode로 요청 기록만 조회
+        const docs = await this.reqModel
+            .find({ userCode })
+            .sort({ requestedAt: -1 })
+            .lean();
+
+        // 2) 이벤트 제목 가져와서 DTO 변환
+        const rewards: RewardSummaryDto[] = [];
+        for (const r of docs) {
+            const ev = await this.eventModel
+                .findOne({ eventCode: r.eventCode })
+                .lean();
+            if (!ev) {
+                throw new NotFoundException(`이벤트(${r.eventCode})를 찾을 수 없습니다.`);
+            }
+            rewards.push({
+                eventCode: r.eventCode,
+                eventTitle: ev.title,
+                requestedAt: r.requestedAt,
+                status: r.status,
+            });
+        }
+
+        return { userCode, rewards };
     }
 
     // 유저 이벤트 보상 요청
