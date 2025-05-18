@@ -49,6 +49,12 @@ export class AppController {
     return this.proxy(req, res);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @All('rewards/*path')
+  async rewardsRoutes(@Req() req: Request, @Res() res: Response) {
+    return this.proxy(req, res);
+  }
+
   // 공통 로직 함수
   private async proxy(req: Request, res: Response) {
     const { method, headers, body } = req;
@@ -61,7 +67,9 @@ export class AppController {
     } else if (url.startsWith('/users')) {
       baseUrl = this.configService.get<string>('AUTH_SERVICE_URL')!; // Auth -> users
     } else if (url.startsWith('/events')) {
-      baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Event -> evnts
+      baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Event -> events
+    } else if (url.startsWith('/rewards')) {
+      baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Reward -> events
     } else {
       return res.status(404).json({ message: '작성 안한 프록시 루트' });
     }
@@ -94,12 +102,13 @@ export class AppController {
 
 
       return res.status(response.status).json(response.data);
-    } catch (error) {
+    } catch (error: any) {
+      const status = error.response?.status || 500;
+      const data = error.response?.data || { message: '프록시 요청 실패' };
       console.error('프록시 실패:', error.message);
-      return res.status(500).json({
-        message: '프록시 요청 실패',
-        error: error.message,
-      });
+      return res
+        .status(status)
+        .json(data);
     }
   }
 }

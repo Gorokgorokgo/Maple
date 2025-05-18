@@ -41,6 +41,8 @@ export class EventsService {
         });
 
         const event = await newEvent.save();
+        console.log('저장 직전:', newEvent);
+
 
         return {
             eventId: event.eventCode,
