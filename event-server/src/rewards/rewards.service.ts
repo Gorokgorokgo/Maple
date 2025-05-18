@@ -1,14 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { HistoryFilter } from 'src/common/history-filter';
 import { EventDocument } from 'src/events/event.schema';
 import { CreateRewardRequestDto } from './dto/create-reward-request.dto';
 import { CreateRewardResponseDto } from './dto/create-reward-response.dto';
 import { GetRewardsHistoryResponseDto } from './dto/get-rewards-history-response.dto';
+import { GetRewardsLogsQueryDto } from './dto/get-rewards-logs-query.dto';
+import { GetRewardsLogsResponseDto } from './dto/get-rewards-logs-response.dto';
 import { RewardHistoryItemDto } from './dto/reward-history-item.dto';
+import { RewardLogDto } from './dto/reward-log.dto';
 import { RewardRequest, RewardRequestDocument } from './reward-request.schema';
 import { RewardDefinition, RewardDefinitionDocument } from './reward_definitions';
-import { HistoryFilter } from 'src/common/history-filter';
 
 @Injectable()
 export class RewardsService {
@@ -97,5 +100,45 @@ export class RewardsService {
             total: history.length,
             history,
         };
+    }
+
+    async getLogs(
+        filter: GetRewardsLogsQueryDto,
+    ): Promise<GetRewardsLogsResponseDto> {
+        // 1) 최소 하나 이상의 필터 필요
+        if (!filter.userId && !filter.eventId && !filter.status) {
+            throw new BadRequestException('필터가 유효하지 않습니다.');
+        }
+
+        // 2) Mongoose 쿼리 빌드
+        const query: any = {};
+        if (filter.userId) query.userCode = filter.userId;
+        if (filter.eventId) query.eventCode = filter.eventId;
+        if (filter.status) query.status = filter.status;
+
+        // 3) 요청 기록 조회
+        const docs = await this.reqModel.find(query).lean();
+
+        // 4) 응답 DTO 변환
+        const logs: RewardLogDto[] = [];
+        for (const r of docs) {
+            const ev = await this.eventModel
+                .findOne({ eventCode: r.eventCode })
+                .lean();
+            if (!ev) {
+                throw new NotFoundException(`이벤트(${r.eventCode})를 찾을 수 없습니다.`);
+            }
+
+            logs.push({
+                requestId: r._id.toString(),
+                userId: r.userCode,
+                eventId: r.eventCode,
+                eventTitle: ev.title,
+                status: r.status,
+                requestedAt: r.requestedAt,
+            });
+        }
+
+        return { total: logs.length, logs };
     }
 }
