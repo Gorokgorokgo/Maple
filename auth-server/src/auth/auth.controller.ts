@@ -22,7 +22,7 @@ export class AuthController {
   }
 
   @Post('login')
-  @ApiOperation({ summary: '로그인', description: 'ID + PW로 로그인하고 JWT 발급' })
+  @ApiOperation({ summary: '로그인', description: 'ID : 영문 + 숫자, 4자 이상 20자까지  / PASSWORD : 소문자, 대문자, 숫자, 특수문자를 모두 포함하여 8자 이상 15자리' })
   @ApiResponse({ status: 200, description: '로그인 성공, JWT 반환' })
   @ApiResponse({ status: 401, description: 'ID 또는 PW 불일치' })
   async login(@Body() loginDto: LoginDto) {
