@@ -1,9 +1,13 @@
 import axios from 'axios';
 
 export async function mergeSwaggerDocs(): Promise<any> {
+
+    const authUrl = process.env.AUTH_SERVICE_URL || 'http://auth-server:3001';
+    const eventUrl = process.env.EVENT_SERVICE_URL || 'http://event-server:3002';
+
     const [authDoc, eventDoc] = await Promise.all([
-        axios.get('http://localhost:3001/api-json'),
-        axios.get('http://localhost:3002/api-json'),
+        axios.get(`${authUrl}/api-json`),
+        axios.get(`${eventUrl}/api-json`),
     ]);
 
     console.log('[Merged Swagger Paths]', Object.keys({

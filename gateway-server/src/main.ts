@@ -13,7 +13,7 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-  
+
   // 유효성 검사 (DTO whitelist)
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
