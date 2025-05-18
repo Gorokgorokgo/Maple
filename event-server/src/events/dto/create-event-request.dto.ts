@@ -3,7 +3,7 @@ import { IsArray, IsDateString, IsEnum, IsString } from 'class-validator';
 import { EventStatus } from 'src/common/enums/event-status.enum';
 
 
-export class CreateEventDto {
+export class CreateEventRequestDto {
   @ApiProperty({ example: '친구 초대 이벤트' })
   @IsString()
   title: string;

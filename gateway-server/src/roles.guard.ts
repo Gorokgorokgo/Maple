@@ -21,10 +21,16 @@ export class RolesGuard implements CanActivate {
     // =========== 경로별 권한 검사 ===========
 
 
+    // 이벤트 생성 : POST /rewards
+    if (method === 'POST' && /^\/rewards\/define$/.test(originalUrl)) {
+      if (!['ADMIN', 'OPERATOR'].includes(role)) {
+        throw new ForbiddenException('보상 등록은 관리자 또는 운영자만 가능합니다.');
+      }
+    }
 
     // 이벤트 생성 : POST /events
     if (method === 'POST' && /^\/events$/.test(originalUrl)) {
-      if (!['ADMIN'].includes(role)) {
+      if (!['ADMIN', 'OPERATOR'].includes(role)) {
         throw new ForbiddenException('이벤트 생성은 관리자 또는 운영자만 가능합니다.');
       }
     }

@@ -8,6 +8,8 @@ export type EventDocument = Event & Document;
 
 @Schema({ timestamps: true })
 export class Event {
+    @Prop({ required: true, unique: true })
+    eventCode: string;
 
     @ApiProperty({ example: '출석 이벤트', description: '이벤트 제목' })
     @Prop({ required: true })
@@ -32,6 +34,12 @@ export class Event {
     @ApiProperty({ example: 'ACTIVE', enum: EventStatus, description: '이벤트 상태' })
     @Prop({ required: true, enum: EventStatus, default: EventStatus.ACTIVE })
     status: EventStatus;
+
+    @ApiProperty({ example: '2025-05-18T14:30:00.000Z' })
+    createdAt: Date;
+
+    @ApiProperty({ example: '2025-05-18T14:30:00.000Z' })
+    updatedAt: Date;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);
