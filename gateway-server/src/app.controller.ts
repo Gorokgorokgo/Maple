@@ -84,12 +84,22 @@ export class AppController {
     console.log('요청 헤더:', req.headers);
     console.log('요청 바디:', req.body);
 
-    try {
-      // headers가 내부에서 body parsing을 실패시킴
-      const cleanedHeaders = { ...headers };
-      delete cleanedHeaders['content-length'];
-      delete cleanedHeaders['host'];
 
+    // headers가 내부에서 body parsing을 실패시킴.
+    const cleanedHeaders: Record<string, string> = {
+      ...req.headers as any,
+    };
+    delete cleanedHeaders['host'];
+    delete cleanedHeaders['content-length'];
+
+    const user = (req as any).user;
+    if (user) {
+      cleanedHeaders['userId'] = user.sub || user.userId;   
+      cleanedHeaders['userCode'] = user.userCode;            
+    }
+
+    console.log('axios 요청에 실제로 보낼 cleanedHeaders:', cleanedHeaders);
+    try {
       const response = await this.http.axiosRef({
         method,
         url: target,
@@ -97,9 +107,10 @@ export class AppController {
         ...(method !== 'GET' && method !== 'DELETE' ? { data: body } : {}),
       });
 
+      console.log('=== Gateway Proxy 응답 로그 ===');
       console.log('응답 상태:', response.status);
+      console.log('응답 헤더:', response.headers);
       console.log('응답 바디:', response.data);
-
 
       return res.status(response.status).json(response.data);
     } catch (error: any) {

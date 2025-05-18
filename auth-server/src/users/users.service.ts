@@ -1,10 +1,10 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './user.schema';
-import { Model } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
+import { Model } from 'mongoose';
 import { Role } from 'src/common/enums/role.enum';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User, UserDocument } from './user.schema';
 
 @Injectable()
 
@@ -62,6 +62,11 @@ export class UsersService {
     // 로그인 아이디로 유저 검색
     async findByLoginId(loginId: string) {
         return await this.userModel.findOne({ loginId });
+    }
+
+    // _id로 유저 검색
+    async findById(id: string): Promise<UserDocument | null> {
+        return this.userModel.findOne({ _id: id }).exec();
     }
 
 }
