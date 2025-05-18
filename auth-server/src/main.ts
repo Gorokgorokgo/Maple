@@ -45,5 +45,6 @@ async function bootstrap() {
   const port = parseInt(process.env.PORT || '3001', 10);
   await app.listen(port);
   console.log(`Auth Server is running on http://localhost:${port}`);
+  console.log(`Swagger docs: http://localhost:${port}/api`);
 }
 bootstrap();

@@ -37,13 +37,44 @@ export class AppController {
     return this.proxy(req, res);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @All('events/*path')
+  async eventsRoutes(@Req() req: Request, @Res() res: Response) {
+    return this.proxy(req, res);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @All('events')
+  async eventsdRoutes(@Req() req: Request, @Res() res: Response) {
+    return this.proxy(req, res);
+  }
+
   // 공통 로직 함수
   private async proxy(req: Request, res: Response) {
+    const { method, headers, body } = req;
     const url = req.originalUrl;
-    const baseUrl = this.configService.get<string>('AUTH_SERVICE_URL');
+
+    // 요청 경로에 따라 다른 서버로 프록시
+    let baseUrl: string;
+    if (url.startsWith('/auth')) {
+      baseUrl = this.configService.get<string>('AUTH_SERVICE_URL')!; // Auth -> auth
+    } else if (url.startsWith('/users')) {
+      baseUrl = this.configService.get<string>('AUTH_SERVICE_URL')!; // Auth -> users
+    } else if (url.startsWith('/events')) {
+      baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Event -> evnts
+    } else {
+      return res.status(404).json({ message: '작성 안한 프록시 루트' });
+    }
+
+
     const target = `${baseUrl}${url}`;
 
-    const { method, headers, body } = req;
+    console.log('=== Gateway Proxy 요청 로그 ===');
+    console.log('요청 URL:', url);
+    console.log('요청 메서드:', method);
+    console.log('프록시 대상:', target);
+    console.log('요청 헤더:', req.headers);
+    console.log('요청 바디:', req.body);
 
     try {
       // headers가 내부에서 body parsing을 실패시킴
@@ -58,8 +89,13 @@ export class AppController {
         ...(method !== 'GET' && method !== 'DELETE' ? { data: body } : {}),
       });
 
+      console.log('응답 상태:', response.status);
+      console.log('응답 바디:', response.data);
+
+
       return res.status(response.status).json(response.data);
     } catch (error) {
+      console.error('프록시 실패:', error.message);
       return res.status(500).json({
         message: '프록시 요청 실패',
         error: error.message,

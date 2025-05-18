@@ -20,14 +20,23 @@ export class RolesGuard implements CanActivate {
 
     // =========== 경로별 권한 검사 ===========
 
-    // 역할 변경: PATCH /users/:id/role
+
+
+    // 이벤트 생성 : POST /events
+    if (method === 'POST' && /^\/events$/.test(originalUrl)) {
+      if (!['ADMIN'].includes(role)) {
+        throw new ForbiddenException('이벤트 생성은 관리자 또는 운영자만 가능합니다.');
+      }
+    }
+
+    // 역할 변경 : PATCH /users/:id/role
     if (method === 'PATCH' && /^\/users\/[^/]+\/role$/.test(originalUrl)) {
       if (!['ADMIN'].includes(role)) {
         throw new ForbiddenException('역할 변경은 관리자만 가능합니다.');
       }
     }
 
-    // 유저 조회: GET /users/:loginId
+    // 유저 조회 : GET /users/:loginId
     if (method === 'GET' && /^\/users\/[^/]+$/.test(originalUrl)) {
       if (!['ADMIN', 'OPERATOR'].includes(role)) {
         throw new ForbiddenException('유저 조회는 관리자 또는 운영자만 가능합니다.');
@@ -35,6 +44,6 @@ export class RolesGuard implements CanActivate {
     }
 
     // 권한 통과
-    return true; 
+    return true;
   }
 }

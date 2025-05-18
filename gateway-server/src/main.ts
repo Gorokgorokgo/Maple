@@ -1,5 +1,4 @@
 import { ValidationPipe } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import * as swaggerUi from 'swagger-ui-express';
 import { AppModule } from './app.module';
@@ -14,7 +13,7 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
-  app.setGlobalPrefix('api');
+  
   // 유효성 검사 (DTO whitelist)
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
@@ -27,15 +26,10 @@ async function bootstrap() {
     },
   }));
 
-  // Swagger UI 띄우기
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(mergedDoc));
-
-
-  // ConfigService 통해 포트 가져오기 (.env 의 PORT)
-  const configService = app.get(ConfigService);
   const port = parseInt(process.env.PORT || '3000', 10);
 
   await app.listen(port);
   console.log(`Gateway Server is running on http://localhost:${port}`);
+  console.log(`Swagger docs: http://localhost:${port}/api-docs`);
 }
 bootstrap();

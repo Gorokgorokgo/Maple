@@ -29,11 +29,11 @@ export class UsersController {
     // 역할 변경
     @Patch(':loginId/role')
     @ApiOperation({ summary: '역할 변경' })
-    updateUserRole(
+    async updateUserRole(
         @Param('loginId') loginId: string,
         @Body() dto: UpdateUserRoleDto,
     ) {
-        return this.usersService.updateRoleByLoginId(loginId, dto.role);
+        return await this.usersService.updateRoleByLoginId(loginId, dto.role);
     }
 
     //---------- 테스트 메서드 -------------
