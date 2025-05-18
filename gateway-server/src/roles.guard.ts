@@ -20,13 +20,19 @@ export class RolesGuard implements CanActivate {
 
     // =========== 경로별 권한 검사 ===========
 
-
+    // 보상 요청 : GET /rewards/logs
+    if (
+      method === 'GET' &&
+      /^\/rewards\/logs(?:\?.*)?$/.test(req.originalUrl)
+    ) if (!['OPERATOR', 'AUDITOR', 'ADMIN'].includes(role)) {
+      throw new ForbiddenException('보상 요청은 운영자 또는 감사자 또는 관리자만 가능합니다.');
+    }
 
     // 보상 요청 : GET /rewards/history
     if (method === 'GET' && /^\/rewards\/history(?:\?.*)?$/.test(req.originalUrl)
     ) if (!['AUDITOR', 'ADMIN'].includes(role)) {
-        throw new ForbiddenException('지급 내역 조회는 감사자 또는 관리자만 가능합니다.');
-      }
+      throw new ForbiddenException('지급 내역 조회는 감사자 또는 관리자만 가능합니다.');
+    }
 
     // 보상 요청 : POST /events/:eventCode/rewards/request
     if (method === 'POST' && /^\/events\/[^/]+\/rewards\/request$/.test(originalUrl)) {
