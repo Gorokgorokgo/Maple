@@ -89,13 +89,17 @@ export class AppController {
     const cleanedHeaders: Record<string, string> = {
       ...req.headers as any,
     };
+    
     delete cleanedHeaders['host'];
     delete cleanedHeaders['content-length'];
+    // 캐시 헤더 삭제
+    delete cleanedHeaders['if-none-match'];
+    delete cleanedHeaders['if-modified-since'];
 
     const user = (req as any).user;
     if (user) {
-      cleanedHeaders['userId'] = user.sub || user.userId;   
-      cleanedHeaders['userCode'] = user.userCode;            
+      cleanedHeaders['userId'] = user.sub || user.userId;
+      cleanedHeaders['userCode'] = user.userCode;
     }
 
     console.log('axios 요청에 실제로 보낼 cleanedHeaders:', cleanedHeaders);

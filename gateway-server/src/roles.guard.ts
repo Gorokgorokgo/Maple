@@ -20,24 +20,32 @@ export class RolesGuard implements CanActivate {
 
     // =========== 경로별 권한 검사 ===========
 
+
+
+    // 보상 요청 : GET /rewards/history
+    if (method === 'GET' && /^\/rewards\/history(?:\?.*)?$/.test(req.originalUrl)
+    ) if (!['AUDITOR', 'ADMIN'].includes(role)) {
+        throw new ForbiddenException('지급 내역 조회는 감사자 또는 관리자만 가능합니다.');
+      }
+
     // 보상 요청 : POST /events/:eventCode/rewards/request
     if (method === 'POST' && /^\/events\/[^/]+\/rewards\/request$/.test(originalUrl)) {
-      if (!['ADMIN', 'USER'].includes(role)) {
-        throw new ForbiddenException('보상 요청은 관리자 또는 유저만 가능합니다.');
+      if (!['USER', 'ADMIN'].includes(role)) {
+        throw new ForbiddenException('보상 요청은 유저 또는 관리자만 가능합니다.');
       }
     }
 
     // 보상 정의 등록 : POST /rewards
     if (method === 'POST' && /^\/rewards\/define$/.test(originalUrl)) {
-      if (!['ADMIN', 'OPERATOR'].includes(role)) {
-        throw new ForbiddenException('보상 등록은 관리자 또는 운영자만 가능합니다.');
+      if (!['OPERATOR', 'ADMIN'].includes(role)) {
+        throw new ForbiddenException('보상 등록은 운영자 또는 관리자만 가능합니다.');
       }
     }
 
     // 이벤트 생성 : POST /events
     if (method === 'POST' && /^\/events$/.test(originalUrl)) {
-      if (!['ADMIN', 'OPERATOR'].includes(role)) {
-        throw new ForbiddenException('이벤트 생성은 관리자 또는 운영자만 가능합니다.');
+      if (!['OPERATOR', 'ADMIN'].includes(role)) {
+        throw new ForbiddenException('이벤트 생성은 운영자 또는 관리자만 가능합니다.');
       }
     }
 
@@ -51,7 +59,7 @@ export class RolesGuard implements CanActivate {
     // 유저 조회 : GET /users/:loginId
     if (method === 'GET' && /^\/users\/[^/]+$/.test(originalUrl)) {
       if (!['ADMIN', 'OPERATOR'].includes(role)) {
-        throw new ForbiddenException('유저 조회는 관리자 또는 운영자만 가능합니다.');
+        throw new ForbiddenException('유저 조회는 운영자 또는 관리자만 가능합니다.');
       }
     }
 

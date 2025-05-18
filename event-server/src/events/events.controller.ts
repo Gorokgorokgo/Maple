@@ -35,14 +35,14 @@ export class EventsController {
   }
 
   @Post()
-  @ApiOperation({ summary: '이벤트 생성' })
+  @ApiOperation({ summary: '이벤트 생성 (운영자 / 관리자)' })
   @ApiResponse({ status: 201, type: CreateEventResponseDto })
   async createEvent(@Body() createEventDto: CreateEventRequestDto): Promise<CreateEventResponseDto> {
     return await this.eventsService.createEvent(createEventDto);
   }
 
   @Post(':eventCode/rewards/request')
-  @ApiOperation({ summary: '이벤트 보상 요청' })
+  @ApiOperation({ summary: '이벤트 보상 요청 (유저 / 관리자)' })
   @ApiResponse({
     status: 201, description: '보상 요청 성공',
     type: CreateRewardRequestResponseDto

@@ -13,7 +13,7 @@ export class UsersController {
 
     // 로그인 아이디 기반 유저 조회
     @Get(':loginId')
-    @ApiOperation({ summary: '유저 조회' })
+    @ApiOperation({ summary: '유저 조회 (운영자 / 관리자)' })
     @ApiParam({ name: 'loginId', description: '유저의 로그인 ID' })
     @ApiResponse({ status: 200, description: '유저 정보 반환' })
     async getUserByLoginId(@Param('loginId') loginId: string) {
@@ -28,7 +28,7 @@ export class UsersController {
 
     // 역할 변경
     @Patch(':loginId/role')
-    @ApiOperation({ summary: '역할 변경' })
+    @ApiOperation({ summary: '역할 변경 (관리자)' })
     async updateUserRole(
         @Param('loginId') loginId: string,
         @Body() dto: UpdateUserRoleDto,
