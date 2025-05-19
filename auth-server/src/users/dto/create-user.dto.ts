@@ -3,7 +3,7 @@ import { IsEnum, IsString, Matches, MaxLength, MinLength } from 'class-validator
 import { Role } from 'src/common/enums/role.enum';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'mapler77', description: '로그인 ID (영문 + 숫자)' })
+  @ApiProperty({ example: 'mapler77', description: '회원가입시 로그인 ID (영문 + 숫자)' })
   @IsString()
   @MinLength(4)
   @MaxLength(20)

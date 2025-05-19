@@ -8,11 +8,11 @@ export type UserDocument = User & Document;
 @Schema({ timestamps: true })
 export class User {
 
-  @ApiProperty({ example: 'mapler77', description: '로그인 ID' })
+  @ApiProperty({ example: 'mapler77', description: '회원가입시 로그인 ID' })
   @Prop({ required: true, unique: true })
   loginId: string;
 
-  @ApiProperty({ example: 'qweQWE123!@#', description: '비밀번호' })
+  @ApiProperty({ example: 'qweQWE123!@#', description: '회원가입시 비밀번호' })
   @Prop({ required: true })
   password: string;
 

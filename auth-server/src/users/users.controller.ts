@@ -14,7 +14,7 @@ export class UsersController {
     // 로그인 아이디 기반 유저 조회
     @Get(':loginId')
     @ApiOperation({ summary: '유저 조회 (운영자 / 관리자)' })
-    @ApiParam({ name: 'loginId', description: '유저의 로그인 ID' })
+    @ApiParam({ name: 'loginId', description: '회원가입시 유저의 로그인 ID' })
     @ApiResponse({ status: 200, description: '유저 정보 반환' })
     async getUserByLoginId(@Param('loginId') loginId: string) {
         const user = await this.usersService.findByLoginId(loginId);
