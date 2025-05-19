@@ -85,10 +85,22 @@ export class EventsService {
     ): Promise<CreateRewardRequestResponseDto> {
         const now = new Date();
 
-        // 1) 이벤트 확인
+        // 이벤트 확인
         const event = await this.eventModel.findOne({ eventCode });
         if (!event) {
             throw new NotFoundException('해당 이벤트를 찾을 수 없습니다.');
+        }
+
+        // 1) 이벤트 기간이 시작되기 전이면 바로 안내 메시지 리턴
+        if (now < event.startDate) {
+            return {
+                eventCode,
+                requestId: null,
+                message: '이벤트 기간이 시작되지 않았습니다.',
+                status: RewardRequestStatus.FAILED,
+                requestedAt: null,
+                rewardedAt: null,
+            };
         }
 
         // 2) 이벤트 기간이 이미 지났으면 바로 종료 메시지 리턴

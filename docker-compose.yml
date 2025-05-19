@@ -33,6 +33,8 @@ services:
     environment:
       PORT:      ${EVENT_PORT:-3002}
       MONGO_URI: ${MONGO_URI:-mongodb://mongo:27017/eventdb}
+      JWT_SECRET:        ${JWT_SECRET:-default_secret}
+      JWT_EXPIRES_IN:    ${JWT_EXPIRES_IN:-3600s}
     ports:
       - "3002:3002"
     depends_on:
@@ -48,6 +50,8 @@ services:
       PORT:              ${GATEWAY_PORT:-3000}
       AUTH_SERVICE_URL:  http://auth-server:3001
       EVENT_SERVICE_URL: http://event-server:3002
+      JWT_SECRET:        ${JWT_SECRET:-default_secret}
+      JWT_EXPIRES_IN:    ${JWT_EXPIRES_IN:-3600s}
     ports:
       - "3000:3000"
     depends_on:
