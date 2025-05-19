@@ -78,9 +78,22 @@ NestJS, MongoDB, Docker를 사용해 구축되었으며, Swagger를 통한 API �
    git clone <repository-url>
    cd <project-folder>
 
-2. 서비스 실행
+2. wsl ubuntu 설치 후 실행
+   ```bash
+   wsl --install
+   wsl -d ubuntu
+3. docker 설치
+   ```bash
+   https://www.docker.com/
+4. 서비스 실행
    ```bash
    docker compose up -d --build
+5. 서비스 중지
+   ```bash
+   docker compose stop
+6. 서비스 DB 초기화
+   ```bash
+   docker compose down -v
 
 ## 🎈 기본 이벤트 
 - 10%의 확률로 무기 강화를 성공하는 기본 이벤트를 구성했습니다. <br/>
