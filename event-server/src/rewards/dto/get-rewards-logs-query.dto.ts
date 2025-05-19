@@ -3,7 +3,7 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { RewardRequestStatus } from 'src/common/enums/reward-request-status.enum';
 
 export class GetRewardsLogsQueryDto {
-  @ApiPropertyOptional({ description: '유저 코드', example: 'usr_00001' })
+  @ApiPropertyOptional({ description: '유저 코드', example: 'user_00001' })
   @IsOptional()
   @IsString()
   userCode?: string;

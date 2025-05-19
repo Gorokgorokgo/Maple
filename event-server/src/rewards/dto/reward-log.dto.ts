@@ -5,7 +5,7 @@ export class RewardLogDto {
   @ApiProperty({ example: 'req_00001', description: '보상 요청 ID' })
   requestId: string;
 
-  @ApiProperty({ example: 'usr_00001', description: '유저 코드' })
+  @ApiProperty({ example: 'user_00001', description: '유저 코드' })
   userCode: string;
 
   @ApiProperty({ example: 'evt_00001', description: '이벤트 코드' })

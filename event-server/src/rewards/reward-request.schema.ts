@@ -9,7 +9,7 @@ export type RewardRequestDocument = RewardRequest & Document;
 @Schema({ timestamps: true })
 export class RewardRequest {
 
-    @ApiProperty({ example: 'usr_00001', description: '유저 코드' })
+    @ApiProperty({ example: 'user_00001', description: '유저 코드' })
     @Prop({ required: true })
     userCode: string;
 

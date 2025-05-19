@@ -6,7 +6,7 @@ export class RewardHistoryItemDto {
     @ApiProperty({ example: 'req_00001', description: '보상 요청 ID' })
     requestId: string;
 
-    @ApiProperty({ example: 'usr_00001', description: '유저 코드' })
+    @ApiProperty({ example: 'user_00001', description: '유저 코드' })
     userCode: string;
 
     @ApiProperty({ example: '무기_강화_이벤트', description: '이벤트 제목' })

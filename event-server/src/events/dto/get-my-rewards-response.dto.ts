@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { RewardSummaryDto } from './reward-summary.dto';
 
 export class GetMyRewardsResponseDto {
-    @ApiProperty({ example: 'usr_00001', description: '본인 유저 코드' })
+    @ApiProperty({ example: 'user_00001', description: '본인 유저 코드' })
     userCode: string;
 
     @ApiProperty({

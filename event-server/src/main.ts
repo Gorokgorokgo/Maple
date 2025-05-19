@@ -15,7 +15,10 @@ async function bootstrap() {
   });
 
   // DTO 유효성 검사
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,     
+  }));
 
   // Swagger 설정
   const config = new DocumentBuilder()
