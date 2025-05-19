@@ -17,7 +17,7 @@ export class RewardDefinition {
   })
   rewards: Reward[];
 
-  @ApiProperty({ example: '2025-05-18T14:30:00.000Z' })
+  @ApiProperty({ example: '2025-05-18T14:30:00.000Z', description: '(UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
   createdAt: Date;
 }
 

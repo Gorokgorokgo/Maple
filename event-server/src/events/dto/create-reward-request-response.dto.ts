@@ -4,18 +4,21 @@ import { RewardRequestStatus } from 'src/common/enums/reward-request-status.enum
 
 
 export class CreateRewardRequestResponseDto {
-    @ApiProperty({ example: 'evt_00003', description: '이벤트 코드' })
-    eventCode: string;
+  @ApiProperty({ example: 'evt_00003' })
+  eventCode: string;
 
-    @ApiProperty({ example: '64a1f3e0d5b7a9c123456789', description: '요청 ID' })
-    requestId: string;
+  @ApiProperty({ example: 'req_00001', required: false })
+  requestId?: string | null;
 
-    @ApiProperty({ example: '이벤트가 성공적으로 생성되었습니다.' })
-    message: string;
+  @ApiProperty({ example: '아직 요청 기록이 없습니다.', required: true })
+  message: string;
 
-    @ApiProperty({ enum: RewardRequestStatus, description: '요청 상태' })
-    status: RewardRequestStatus;
+  @ApiProperty({ enum: RewardRequestStatus })
+  status: RewardRequestStatus;
 
-    @ApiProperty({ example: '2025-05-18T18:00:00.000Z', description: '요청 시각' })
-    requestedAt: Date;
+  @ApiProperty({ example: '2025-06-01T00:00:00.000Z', description: '(UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)', required: false })
+  requestedAt?: Date | null;
+
+  @ApiProperty({ example: '2025-06-02T12:00:00.000Z', description: '(UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)', required: false })
+  rewardedAt?: Date | null;
 }

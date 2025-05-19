@@ -54,13 +54,18 @@ export class AppController {
   async rewardsRoutes(@Req() req: Request, @Res() res: Response) {
     return this.proxy(req, res);
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @All('enhancements/*path')
+  async enhancementsRoutes(@Req() req: Request, @Res() res: Response) {
+    return this.proxy(req, res);
+  }
 
   // 공통 로직 함수
   private async proxy(req: Request, res: Response) {
     const { method, headers, body } = req;
     const url = req.originalUrl;
 
-    // 요청 경로에 따라 다른 서버로 프록시
+    // 요청 경로에 따라 다른 서버로 프록시 
     let baseUrl: string;
     if (url.startsWith('/auth')) {
       baseUrl = this.configService.get<string>('AUTH_SERVICE_URL')!; // Auth -> auth
@@ -70,7 +75,9 @@ export class AppController {
       baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Event -> events
     } else if (url.startsWith('/rewards')) {
       baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Reward -> events
-    } else {
+    } else if (url.startsWith('/enhancements')) {
+      baseUrl = this.configService.get<string>('EVENT_SERVICE_URL')!; // Enhancement -> events
+    }  else {
       return res.status(404).json({ message: '작성 안한 프록시 루트' });
     }
 
@@ -89,7 +96,7 @@ export class AppController {
     const cleanedHeaders: Record<string, string> = {
       ...req.headers as any,
     };
-    
+
     delete cleanedHeaders['host'];
     delete cleanedHeaders['content-length'];
     // 캐시 헤더 삭제

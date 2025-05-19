@@ -16,8 +16,8 @@ export class RewardsController {
 
     @Get('logs')
     @ApiOperation({ summary: '보상 요청 기록 조회 (운영자 / 감사자 / 관리자)' })
-    @ApiQuery({ name: 'userId', required: false, description: '유저 코드 필터' })
-    @ApiQuery({ name: 'eventId', required: false, description: '이벤트 코드 필터' })
+    @ApiQuery({ name: 'userCode', required: false, description: '유저 코드 필터' })
+    @ApiQuery({ name: 'eventCode', required: false, description: '이벤트 코드 필터' })
     @ApiQuery({
         name: 'status',
         enum: RewardRequestStatus,
@@ -41,7 +41,7 @@ export class RewardsController {
     @Get('history')
     @ApiOperation({ summary: '지급 내역 조회 (감사자 / 관리자)' })
     @ApiQuery({ name: 'userCode', required: false, description: '유저 코드별 필터링 ex) user_00001' })
-    @ApiQuery({ name: 'eventCode', required: false, description: '이벤트 코드별 필터링 ex) event_00001' })
+    @ApiQuery({ name: 'eventCode', required: false, description: '이벤트 코드별 필터링 ex) evt_00001' })
     @ApiQuery({
         name: 'status',
         enum: RewardRequestStatus,

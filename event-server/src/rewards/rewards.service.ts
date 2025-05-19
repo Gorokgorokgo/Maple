@@ -106,14 +106,14 @@ export class RewardsService {
         filter: GetRewardsLogsQueryDto,
     ): Promise<GetRewardsLogsResponseDto> {
         // 1) 최소 하나 이상의 필터 필요
-        if (!filter.userId && !filter.eventId && !filter.status) {
+        if (!filter.userCode && !filter.eventCode && !filter.status) {
             throw new BadRequestException('필터가 유효하지 않습니다.');
         }
 
         // 2) Mongoose 쿼리 빌드
         const query: any = {};
-        if (filter.userId) query.userCode = filter.userId;
-        if (filter.eventId) query.eventCode = filter.eventId;
+        if (filter.userCode) query.userCode = filter.userCode;
+        if (filter.eventCode) query.eventCode = filter.eventCode;
         if (filter.status) query.status = filter.status;
 
         // 3) 요청 기록 조회
@@ -131,8 +131,8 @@ export class RewardsService {
 
             logs.push({
                 requestId: r._id.toString(),
-                userId: r.userCode,
-                eventId: r.eventCode,
+                userCode: r.userCode,
+                eventCode: r.eventCode,
                 eventTitle: ev.title,
                 status: r.status,
                 requestedAt: r.requestedAt,

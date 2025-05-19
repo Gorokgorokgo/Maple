@@ -6,12 +6,12 @@ export class GetRewardsLogsQueryDto {
   @ApiPropertyOptional({ description: '유저 코드', example: 'usr_00001' })
   @IsOptional()
   @IsString()
-  userId?: string;
+  userCode?: string;
 
-  @ApiPropertyOptional({ description: '이벤트 코드', example: 'evt_00003' })
+  @ApiPropertyOptional({ description: '이벤트 코드', example: 'evt_00001' })
   @IsOptional()
   @IsString()
-  eventId?: string;
+  eventCode?: string;
 
   @ApiPropertyOptional({
     description: '요청 상태',

@@ -23,11 +23,11 @@ export class Event {
     @Prop({ type: [String], default: [] })
     conditions: string[];
 
-    @ApiProperty({ example: '2025-05-01T00:00:00.000Z', description: '이벤트 시작일' })
+    @ApiProperty({ example: '2025-05-01T00:00:00.000Z', description: '이벤트 시작일 (UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
     @Prop({ required: true })
     startDate: Date;
 
-    @ApiProperty({ example: '2025-05-31T23:59:59.000Z', description: '이벤트 종료일' })
+    @ApiProperty({ example: '2025-05-31T23:59:59.000Z', description: '이벤트 종료일 (UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
     @Prop({ required: true })
     endDate: Date;
 
@@ -35,10 +35,10 @@ export class Event {
     @Prop({ required: true, enum: EventStatus, default: EventStatus.ACTIVE })
     status: EventStatus;
 
-    @ApiProperty({ example: '2025-05-18T14:30:00.000Z' })
+    @ApiProperty({ example: '2025-05-18T14:30:00.000Z', description: '(UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
     createdAt: Date;
 
-    @ApiProperty({ example: '2025-05-18T14:30:00.000Z' })
+    @ApiProperty({ example: '2025-05-18T14:30:00.000Z', description: '(UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
     updatedAt: Date;
 }
 
