@@ -27,7 +27,7 @@ export class UsersService {
 
     // 유저 생성
     async create(createUserDto: CreateUserDto): Promise<User> {
-        const { loginId, password, nickname } = createUserDto;
+        const { loginId, password, nickname, role } = createUserDto;
 
         // ID 중복 검사
         const existsLoginId = await this.userModel.exists({ loginId });
@@ -52,7 +52,7 @@ export class UsersService {
             loginId,
             password: hashedPassword,
             nickname,
-            role: 'USER',
+            role: role,
             userCode,
         });
 

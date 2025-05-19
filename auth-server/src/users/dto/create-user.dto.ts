@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, MinLength, MaxLength, Matches } from 'class-validator';
+import { IsEnum, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { Role } from 'src/common/enums/role.enum';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'mapler77', description: '로그인 ID (영문 + 숫자)' })
@@ -26,4 +27,7 @@ export class CreateUserDto {
   @MaxLength(30)
   nickname: string;
 
+  @ApiProperty({ example: Role.USER, enum: Role, description: '유저 역할' })
+  @IsEnum(Role)
+  role: Role;
 }
