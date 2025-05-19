@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { EventsModule } from './events/events.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { RewardsModule } from './rewards/rewards.module';
+import { EnhancementsModule } from './enhancements/enhancements.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { RewardsModule } from './rewards/rewards.module';
     MongooseModule.forRoot(process.env.MONGO_URI!),
     EventsModule,
     RewardsModule,
+    EnhancementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

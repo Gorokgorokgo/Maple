@@ -9,7 +9,7 @@ export class RewardHistoryItemDto {
     @ApiProperty({ example: 'usr_00001', description: '유저 코드' })
     userCode: string;
 
-    @ApiProperty({ example: '친구 초대 이벤트', description: '이벤트 제목' })
+    @ApiProperty({ example: '무기_강화_이벤트', description: '이벤트 제목' })
     eventTitle: string;
 
     @ApiProperty({ example: RewardItem.COUPON, enum: RewardItem, description: '보상 타입' })
@@ -21,6 +21,6 @@ export class RewardHistoryItemDto {
     @ApiProperty({ example: RewardRequestStatus.REWARDED, enum: RewardRequestStatus, description: '요청 상태' })
     status: RewardRequestStatus;
 
-    @ApiProperty({ example: '2025-05-12T13:45:00.000Z', description: '지급 시각' })
+    @ApiProperty({ example: '2025-05-12T13:45:00.000Z', description: '지급 시각 (UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
     rewardedAt: Date;
 }

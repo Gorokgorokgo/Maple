@@ -20,6 +20,13 @@ export class RolesGuard implements CanActivate {
 
     // =========== 경로별 권한 검사 ===========
 
+   // 강화 이벤트 시도 : POST /enhancements/attempt/:eventCode
+    if (method === 'POST' && /^\/enhancements\/attempt\/[^/]+$/.test(originalUrl)) {
+      if (!['USER', 'ADMIN'].includes(role)) {
+        throw new ForbiddenException('강화 이벤트 시도는 유저 또는 관리자만 가능합니다.');
+      }
+    }
+
     // 보상 요청 : GET /rewards/logs
     if (
       method === 'GET' &&

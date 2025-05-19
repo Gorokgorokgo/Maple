@@ -4,4 +4,5 @@ export enum RewardRequestStatus {
   FAILED    = 'FAILED',
   DUPLICATE = 'DUPLICATE',
   REJECTED  = 'REJECTED',
+  ABSENT = 'ABSENT'
 }

@@ -10,6 +10,6 @@ export class CreateRewardResponseDto {
   @ApiProperty({ example: 2, description: '등록된 보상 항목 수' })
   rewardCount: number;
 
-  @ApiProperty({ example: '2025-05-18T16:30:00.000Z', description: '등록 시간' })
+  @ApiProperty({ example: '2025-05-18T16:30:00.000Z', description: '등록 시간 (UTC 기준이며, 한국시간보다 9시간 이후 시각입니다.)' })
   definedAt: Date;
 }
